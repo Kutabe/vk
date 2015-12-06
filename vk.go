@@ -14,10 +14,9 @@ const apiMethodURL = "https://api.vk.com/method/" //Method request URL
 
 // AuthResponse structure contains all parameters of response of authorization request
 type AuthResponse struct {
-	AccessToken string `json:"access_token"`
-	ExpiresIn   int    `json:"expires_in"`
-	UserID      int    `json:"user_id"`
-
+	UserID           int    `json:"user_id"`
+	ExpiresIn        int    `json:"expires_in"`
+	AccessToken      string `json:"access_token"`
 	Error            string `json:"error"`
 	ErrorDescription string `json:"error_description"`
 }
