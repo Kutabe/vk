@@ -2,7 +2,6 @@ package vk
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -23,7 +22,7 @@ type AuthResponse struct {
 	ErrorDescription string `json:"error_description"`
 }
 
-// Auth function makes authorization request
+// Auth function makes authorization request and returns *AuthResponse structure
 func Auth(login string, password string) (*AuthResponse, error) {
 	var jsonResponse *AuthResponse
 	var requestURL = url.Values{
@@ -48,8 +47,8 @@ func Auth(login string, password string) (*AuthResponse, error) {
 	return jsonResponse, nil
 }
 
-// Request function makes api method request
-func Request(methodName string, parameters map[string]string, user *AuthResponse) ([]map[string]interface{}, error) {
+// Request function makes api method request and returns []byte JSON response
+func Request(methodName string, parameters map[string]string, user *AuthResponse) ([]byte, error) {
 	requestURL, err := url.Parse(apiMethodURL + methodName)
 	if err != nil {
 		return nil, err
@@ -69,28 +68,5 @@ func Request(methodName string, parameters map[string]string, user *AuthResponse
 	if err != nil {
 		return nil, err
 	}
-	return parseJSONResponse(content)
-}
-
-func parseJSONResponse(rawJSON []byte) ([]map[string]interface{}, error) {
-	responseMap := make(map[string][]map[string]interface{})
-	responseMapShort := make(map[string]map[string]interface{})
-	if json.Unmarshal(rawJSON, &responseMap) != nil {
-		if err := json.Unmarshal(rawJSON, &responseMapShort); err != nil {
-			return nil, err
-		}
-		var key string
-		for k := range responseMapShort {
-			key = k
-			break
-		}
-		responseMap[key] = []map[string]interface{}{responseMapShort[key]}
-	}
-
-	if _, value := responseMap["response"]; value {
-		return responseMap["response"], nil
-	} else if _, value := responseMap["error"]; value {
-		return nil, errors.New(responseMap["error"][0]["error_msg"].(string))
-	}
-	return nil, errors.New("Response not clear")
+	return content, nil
 }
