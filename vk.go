@@ -74,17 +74,17 @@ func Request(methodName string, parameters map[string]string, user *AuthResponse
 
 func parseJSONResponse(rawJSON []byte) ([]map[string]interface{}, error) {
 	responseMap := make(map[string][]map[string]interface{})
-	responseMapAlt := make(map[string]map[string]interface{})
+	responseMapShort := make(map[string]map[string]interface{})
 	if json.Unmarshal(rawJSON, &responseMap) != nil {
-		if err := json.Unmarshal(rawJSON, &responseMapAlt); err != nil {
+		if err := json.Unmarshal(rawJSON, &responseMapShort); err != nil {
 			return nil, err
 		}
 		var key string
-		for k := range responseMapAlt {
+		for k := range responseMapShort {
 			key = k
 			break
 		}
-		responseMap[key] = []map[string]interface{}{responseMapAlt[key]}
+		responseMap[key] = []map[string]interface{}{responseMapShort[key]}
 	}
 
 	if _, value := responseMap["response"]; value {
