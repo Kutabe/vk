@@ -7,8 +7,12 @@ import (
 	"net/url"
 )
 
-const clientID = "2274003"                        //VK for Android app client_id
-const clientSecret = "hHbZxrka2uZ6jB1inYsH"       //VK for Android app client_secret
+//const clientID = "2274003"                      //VK for Android app client_id
+//const clientSecret = "hHbZxrka2uZ6jB1inYsH"     //VK for Android app client_secret
+//const clientID = "3697615"                      //VK for Windows app client_id
+//const clientSecret = "AlVXZFMUqyrnABp8ncuU"     //VK for Windows app client_secret
+const clientID = "3140623"                        //VK for iPhone app client_id
+const clientSecret = "VeWdmVclDCtn6ihuP1nt"       //VK for iPhone app client_secret
 const authURL = "https://oauth.vk.com/token?"     //Direct Authorization URL
 const apiMethodURL = "https://api.vk.com/method/" //Method request URL
 
@@ -56,7 +60,9 @@ func Request(methodName string, parameters map[string]string, user *AuthResponse
 	for key, value := range parameters {
 		requestQuery.Set(key, value)
 	}
-	requestQuery.Set("access_token", user.AccessToken)
+	if user != nil {
+		requestQuery.Set("access_token", user.AccessToken)
+	}
 	requestURL.RawQuery = requestQuery.Encode()
 	response, err := http.Get(requestURL.String())
 	if err != nil {
