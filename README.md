@@ -2,7 +2,7 @@
 vk is a golang package that provides tools to interact with the API of the social network [VK](http://vk.com)
 ## Install
 ```
-go get https://github.com/Kutabe/vk
+go get github.com/Kutabe/vk
 ```
 ## Usage example
 ```
