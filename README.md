@@ -5,7 +5,7 @@ vk is a golang package that provides tools to interact with the API of the socia
 go get github.com/Kutabe/vk
 ```
 ## Usage example
-```
+```go
 package main
  
 import (
